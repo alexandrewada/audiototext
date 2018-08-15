@@ -24,7 +24,7 @@ class Translate
         ]);
     }
 
-    public function TranslatorArchive($dir)
+    public function TranslatorArchiveSync($dir)
     {
 
         $operation = $this->sp->beginRecognizeOperation(
@@ -44,6 +44,20 @@ class Translate
         $result = $operation->results()[0];
 
         return $result->topAlternative()['transcript'];
+    }
+
+
+    public function TranslatorArchive($dir)
+    {
+
+        $results = $this->sp->recognize(
+            fopen($dir, 'r'), [
+                'encoding' => $this->config['encoding'],
+                'sampleRateHertz' => $this->config['sampleRateHertz'],
+            ]);
+
+    
+        return $results;
     }
 
 }

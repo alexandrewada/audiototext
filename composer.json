@@ -8,7 +8,8 @@
         }
     ],
     "require": {
-        "google/cloud-speech": "^0.16.0"
+        "google/cloud-speech": "^0.16.0",
+        "php-ffmpeg/php-ffmpeg": "^0.12.0"
     },
     "autoload": {
         "psr-4": {
