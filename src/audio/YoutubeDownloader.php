@@ -1,7 +1,9 @@
 <?php
-include "Curl.php";
+namespace Audio;
 
-class YoutubeAudio extends Curl
+use Audio\Curl;
+
+class YoutubeDownloader extends Curl
 {
     public $urlService = 'https://youtube7.download';
 
