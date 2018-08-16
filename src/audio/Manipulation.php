@@ -31,7 +31,7 @@ class Manipulation
         return $this->ffprobe->format($audioPatch)->get('duration');
     }
 
-    public function mp3toFlac($mp3Patch, $flacPatch)
+    public function mp3toFlac($mp3Patch, $flacPatch,$cutInit='false',$cutFinish='false')
     {
         if (!file_exists($flacPatch)) {
             if (file_exists($mp3Patch)) {
@@ -44,6 +44,11 @@ class Manipulation
                 $format
                     ->setAudioChannels(1)
                     ->setAudioKiloBitrate(256);
+
+                if($cutInit != false && $cutFinish != false){
+                    $audio->filters()->clip(FFMpeg\Coordinate\TimeCode::fromSeconds($cutInit), FFMpeg\Coordinate\TimeCode::fromSeconds($cutFinish));
+                    $flacPatch = 'storage/flac_audios/' . $cutInit . '-'.$cutFinish.'.flac';
+                }
 
                 return $audio->save($format, $flacPatch);
             }

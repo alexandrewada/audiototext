@@ -62,6 +62,7 @@ class Bootstrap
         // Pegar url do mp3 do youtube
         $urlDownload = $yd->getDownload($this->id_youtube);
 
+
         if (!file_exists($patchMp3)) {
             $saveMP3 = $yd->saveFile($urlDownload, $patchMp3);
         } else {
@@ -70,15 +71,29 @@ class Bootstrap
 
         // Se o mp3 existir
         if (is_numeric($saveMP3)) {
-            $tempoAudio = $m->getDurationAudio($patchMp3);
+            $tempoAudio    = $m->getDurationAudio($patchMp3);
+            $tempoPorAudio = 60; 
 
-            $convert = $m->mp3toFlac($patchMp3, $patchFlac);
-            $texto = $t->TranslatorArchive($patchFlac);
 
-            if ($texto) {
-                file_put_contents($patchText, $texto);
-                echo $texto;
+            if($tempoAudio >= $tempoPorAudio){
+                $parts = $tempoAudio/$tempoPorAudio;
+
+                for($i=0; $i < $parts; $i++){
+                    $tempoInicio = ($i == 0) ? 0.1 : $tempoPorAudio*$i;
+                    $tempoFinal  = $tempoPorAudio*($i+1);
+
+                    $convert = $m->mp3toFlac($patchMp3, $patchFlac,$tempoInicio,$tempoFinal);
+                }
             }
+            exit;
+
+            $convert = $m->mp3toFlac($patchMp3, $patchFlac,0,10);
+            // $texto = $t->TranslatorArchive($patchFlac);
+
+            // if ($texto) {
+            //     file_put_contents($patchText, $texto);
+            //     echo $texto;
+            // }
 
         }
 
