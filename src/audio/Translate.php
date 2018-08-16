@@ -8,11 +8,11 @@ class Translate
 {
     public $sp;
     public $config = [
-        'languageCode' => 'en-US',
-        'keyFilePath' => 'keyfile.json',
-        'encoding' => 'LINEAR16',
-        'sampleRateHertz' => 16000,
-        'retries' => 1,
+        'languageCode'      => 'pt-BR',
+        'keyFilePath'       => 'keyfile.json',
+        'encoding'          => 'LINEAR16',
+        'sampleRateHertz'   => 44100,
+        'retries'           => 1,
     ];
 
     public function __construct()

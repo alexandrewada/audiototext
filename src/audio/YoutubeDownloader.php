@@ -26,4 +26,10 @@ class YoutubeDownloader extends Curl
 
     }
 
+    public function saveFile($url,$patch) {
+        if($url && $patch){
+            return file_put_contents($patch, fopen($url, 'r'));
+        }
+    }
+
 }

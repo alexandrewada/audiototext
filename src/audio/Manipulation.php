@@ -32,17 +32,19 @@ class Manipulation
 
     public function mp3toFlac($mp3Patch, $flacPatch)
     {
-        $audio = $this->ffmpeg->open($mp3Patch);
-        $format = new FFMpeg\Format\Audio\Flac();
-        // $format->on('progress', function ($audio, $format, $percentage) {
-        //     echo "$percentage % transcoded";
-        // });
+        if(!file_exists($flacPatch)){
+            $audio = $this->ffmpeg->open($mp3Patch);
+            $format = new FFMpeg\Format\Audio\Flac();
+            // $format->on('progress', function ($audio, $format, $percentage) {
+            //     echo "$percentage % transcoded";
+            // });
 
-        $format
-            ->setAudioChannels(1)
-            ->setAudioKiloBitrate(256);
+            $format
+                ->setAudioChannels(1)
+                ->setAudioKiloBitrate(256);
 
-        return $audio->save($format, $flacPatch);
+            return $audio->save($format, $flacPatch);
+        }
     }
 
 }
