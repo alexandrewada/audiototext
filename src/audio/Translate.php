@@ -10,7 +10,7 @@ class Translate
     public $config = [
         'languageCode'      => 'pt-BR',
         'keyFilePath'       => 'keyfile.json',
-        'encoding'          => 'LINEAR16',
+        'encoding'          => 'FLAC',
         'sampleRateHertz'   => 44100,
         'retries'           => 1,
     ];
@@ -23,8 +23,9 @@ class Translate
             'retries' => $this->config['retries'],
         ]);
     }
+    
 
-    public function TranslatorArchiveSync($dir)
+    public function TranslatorArchive($dir)
     {
 
         $operation = $this->sp->beginRecognizeOperation(
@@ -45,19 +46,4 @@ class Translate
 
         return $result->topAlternative()['transcript'];
     }
-
-
-    public function TranslatorArchive($dir)
-    {
-
-        $results = $this->sp->recognize(
-            fopen($dir, 'r'), [
-                'encoding' => $this->config['encoding'],
-                'sampleRateHertz' => $this->config['sampleRateHertz'],
-            ]);
-
-    
-        return $results;
-    }
-
 }

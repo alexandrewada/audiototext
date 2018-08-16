@@ -14,14 +14,21 @@ class YoutubeDownloader extends Curl
             'url' => 'https://t1.youtube6download.top/check.php?callback=jQuery&v=' . $id_youtube . '&f=mp3',
         ]);
         
-        // Extrai o json que contém o hash para download
-        $p = explode("(", $json);
-        $json = $p[1];
-        $json = json_decode(substr($json, 0, -1));
+        preg_match_all("#\"(.*?)\"#",$json,$json);
+
+        $hash = $json[1][3];
         
-        // Se o hash tiver pronto gospe, o link de download é mostrado
-        if ($json->hash) {
-            return 'https://t1.youtube6download.top/quq/' . $json->hash . '/' . $id_youtube;
+        $urlDownload   = 'https://t1.youtube6download.top/quq/' . $hash . '/' . $id_youtube;
+        $downloadReady = false;
+
+
+        while($downloadReady == false){
+            sleep(1);
+            $header = get_headers($urlDownload);
+            if($header[2] == 'Content-Type: application/force-download'){
+                $downloadReady = true;
+                return $urlDownload;
+            } 
         }
 
     }
