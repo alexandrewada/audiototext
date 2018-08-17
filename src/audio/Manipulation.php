@@ -26,30 +26,34 @@ class Manipulation
 
     }
 
+    // Pegar duração do audio
     public function getDurationAudio($audioPatch)
     {
         return $this->ffprobe->format($audioPatch)->get('duration');
     }
 
+    // Transformar mp3 para flac
     public function mp3toFlac($mp3Patch, $flacPatch,$cutInit='false',$cutFinish='false')
     {
+        // Só faz algo se flac não existir
         if (!file_exists($flacPatch)) {
+            // Só faz algo de mp3 exisitr
             if (file_exists($mp3Patch)) {
+                // Abri o mp3
                 $audio = $this->ffmpeg->open($mp3Patch);
+                
                 $format = new FFMpeg\Format\Audio\Flac();
-                // $format->on('progress', function ($audio, $format, $percentage) {
-                //     echo "$percentage % transcoded";
-                // });
-
+                // Se ta o channel para 1
                 $format
                     ->setAudioChannels(1)
                     ->setAudioKiloBitrate(256);
 
+                // Se for informado tempo de cut então iremos recortar o mp3
                 if($cutInit != false && $cutFinish != false){
                     $audio->filters()->clip(FFMpeg\Coordinate\TimeCode::fromSeconds($cutInit), FFMpeg\Coordinate\TimeCode::fromSeconds($cutFinish));
                     
                 }
-
+                
                 return $audio->save($format, $flacPatch);
             }
         }
