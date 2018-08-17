@@ -91,23 +91,21 @@ class Bootstrap
 
                 }
 
+                file_put_contents($patchText, implode(" ",$texto));
+
             } else {
                 $patchFlac = 'storage/flac_audios/' . $this->id_youtube . '.flac';
                 $m->mp3toFlac($patchMp3, $patchFlac, 0.1, 60);
-                $texto[] = $t->TranslatorArchive($patchFlac);
-
+                $texto = $t->TranslatorArchive($patchFlac);
+                file_put_contents($patchText, $texto);
             }
 
-            #    $convert = $m->mp3toFlac($patchMp3, $patchFlac,0,10);
-            // $texto = $t->TranslatorArchive($patchFlac);
+    
+        }
 
-            // if ($texto) {
-            //     file_put_contents($patchText, $texto);
-            //     echo $texto;
-            // }
-
-            print_r($texto);
-
+        if (file_exists($patchText)) {
+            echo file_get_contents($patchText);
+            exit;
         }
 
     }
