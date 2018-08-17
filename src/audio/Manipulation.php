@@ -47,7 +47,7 @@ class Manipulation
 
                 if($cutInit != false && $cutFinish != false){
                     $audio->filters()->clip(FFMpeg\Coordinate\TimeCode::fromSeconds($cutInit), FFMpeg\Coordinate\TimeCode::fromSeconds($cutFinish));
-                    $flacPatch = 'storage/flac_audios/' . $cutInit . '-'.$cutFinish.'.flac';
+
                 }
 
                 return $audio->save($format, $flacPatch);

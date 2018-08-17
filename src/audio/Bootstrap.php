@@ -62,7 +62,6 @@ class Bootstrap
         // Pegar url do mp3 do youtube
         $urlDownload = $yd->getDownload($this->id_youtube);
 
-
         if (!file_exists($patchMp3)) {
             $saveMP3 = $yd->saveFile($urlDownload, $patchMp3);
         } else {
@@ -71,23 +70,28 @@ class Bootstrap
 
         // Se o mp3 existir
         if (is_numeric($saveMP3)) {
-            $tempoAudio    = $m->getDurationAudio($patchMp3);
-            $tempoPorAudio = 60; 
+            $tempoAudio = $m->getDurationAudio($patchMp3);
+            $tempoPorAudio = 60;
 
+            if ($tempoAudio >= $tempoPorAudio) {
+                $parts = ($tempoAudio / $tempoPorAudio);
+             
+        
+                for ($i = 1; $i <= $parts; $i++) {
+                    // $init      = ($tempoPorAudio*$i);
+                    // $fim       = ($i == $parts-1 && $sobra != 0) ? ($init + $sobra) :  ($tempoPorAudio*($i+1));
+                    $patchFlac = 'storage/flac_audios/' . $i . '.flac';
 
-            if($tempoAudio >= $tempoPorAudio){
-                $parts = $tempoAudio/$tempoPorAudio;
+                    $inicio = ($i == 1) ? 0.1 : $tempoPorAudio * $i;
 
-                for($i=0; $i < $parts; $i++){
-                    $tempoInicio = ($i == 0) ? 0.1 : $tempoPorAudio*$i;
-                    $tempoFinal  = $tempoPorAudio*($i+1);
+                    $convert = $m->mp3toFlac($patchMp3, $patchFlac, $inicio, $tempoPorAudio);
 
-                    $convert = $m->mp3toFlac($patchMp3, $patchFlac,$tempoInicio,$tempoFinal);
                 }
             }
+
             exit;
 
-            $convert = $m->mp3toFlac($patchMp3, $patchFlac,0,10);
+            #    $convert = $m->mp3toFlac($patchMp3, $patchFlac,0,10);
             // $texto = $t->TranslatorArchive($patchFlac);
 
             // if ($texto) {
