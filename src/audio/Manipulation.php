@@ -14,16 +14,28 @@ class Manipulation
     public function __construct()
     {
 
-        $this->ffmpeg = FFMpeg\FFMpeg::create([
-            'ffmpeg.binaries' => 'bin\ffmpeg.exe',
-            'ffprobe.binaries' => 'bin\ffprobe.exe',
-        ]);
-
-        $this->ffprobe = FFMpeg\FFProbe::create([
-            'ffmpeg.binaries' => 'bin\ffmpeg.exe',
-            'ffprobe.binaries' => 'bin\ffprobe.exe',
-        ]);
-
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $this->ffmpeg = FFMpeg\FFMpeg::create([
+                'ffmpeg.binaries' => 'bin\ffmpeg.exe',
+                'ffprobe.binaries' => 'bin\ffprobe.exe',
+            ]);
+    
+            $this->ffprobe = FFMpeg\FFProbe::create([
+                'ffmpeg.binaries' => 'bin\ffmpeg.exe',
+                'ffprobe.binaries' => 'bin\ffprobe.exe',
+            ]);
+            
+        } else {
+            $this->ffmpeg = FFMpeg\FFMpeg::create([
+                'ffmpeg.binaries' => 'bin-linux/ffmpeg',
+                'ffprobe.binaries' => 'bin-linux/ffprobe',
+            ]);
+    
+            $this->ffprobe = FFMpeg\FFProbe::create([
+                'ffmpeg.binaries' => 'bin-linux/ffmpeg',
+                'ffprobe.binaries' => 'bin-linux/ffprobe',
+            ]);
+        }
     }
 
     // Pegar duração do audio
