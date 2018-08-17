@@ -1,5 +1,3 @@
 vendor/
 composer.lock
 keyfile.json
-*.flac
-*.mp3

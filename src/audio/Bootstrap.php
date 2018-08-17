@@ -12,7 +12,7 @@ class Bootstrap
     public $id_youtube;
     public $audioUrl;
 
-    public function __construct($tipo, $youtubeOrAudio)
+    public function __construct($tipo, $youtubeOrAudio,$encode='FLAC',$hertz='48000')
     {
 
         if (empty($youtubeOrAudio)) {
@@ -47,8 +47,8 @@ class Bootstrap
         $m = new Manipulation();
         $t = new Translate();
 
-        $t->config['encoding'] = 'FLAC';
-        $t->config['sampleRateHertz'] = 44100;
+        $t->config['encoding'] = $encode;
+        $t->config['sampleRateHertz'] = $hertz;
 
         $patchMp3 = 'storage/mp3_audios/' . $this->id_youtube . '.mp3';
         $patchFlac = 'storage/flac_audios/' . $this->id_youtube . '.flac';
@@ -73,36 +73,30 @@ class Bootstrap
             $tempoAudio = $m->getDurationAudio($patchMp3);
             $tempoPorAudio = 60;
 
-       
-
             if ($tempoAudio >= $tempoPorAudio) {
                 $parts = ceil($tempoAudio / $tempoPorAudio);
-             
+
                 $texto = [];
-        
+
                 for ($i = 0; $i < $parts; $i++) {
                     // $init      = ($tempoPorAudio*$i);
                     // $fim       = ($i == $parts-1 && $sobra != 0) ? ($init + $sobra) :  ($tempoPorAudio*($i+1));
-                    $patchFlac = 'storage/flac_audios/'.$this->id_youtube .'_'. $i . '.flac';
+                    $patchFlac = 'storage/flac_audios/' . $this->id_youtube . '_' . $i . '.flac';
 
-                    $inicio =  ($i == 0) ? 0.1 : $tempoPorAudio * $i;
+                    $inicio = ($i == 0) ? 0.1 : $tempoPorAudio * $i;
 
                     $convert = $m->mp3toFlac($patchMp3, $patchFlac, $inicio, $tempoPorAudio);
 
                     $texto[] = $t->TranslatorArchiveLine($patchFlac);
 
-
                 }
 
-        
             } else {
-                $patchFlac = 'storage/flac_audios/'.$this->id_youtube.'.flac';
-                $m->mp3toFlac($patchMp3, $patchFlac,0,1,60);
-                $texto[] = $t->TranslatorArchiveLine($patchFlac);
-        
+                $patchFlac = 'storage/flac_audios/' . $this->id_youtube . '.flac';
+                $m->mp3toFlac($patchMp3, $patchFlac, 0.1, 60);
+                $texto[] = $t->TranslatorArchive($patchFlac);
+
             }
-
-
 
             #    $convert = $m->mp3toFlac($patchMp3, $patchFlac,0,10);
             // $texto = $t->TranslatorArchive($patchFlac);

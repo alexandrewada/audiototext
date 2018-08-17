@@ -10,23 +10,23 @@ class YoutubeDownloader extends Curl
     public function getDownload($id_youtube)
     {
         // Envia para serviço externo solicitacao de download
-        $json = $this->GET([
-            'url' => 'https://t1.youtube6download.top/check.php?callback=jQuery&v=' . $id_youtube . '&f=mp3',
-        ]);
 
-       # print_r(get_headers('https://t1.youtube6download.top/check.php?callback=jQuery&v=' . $id_youtube . '&f=mp3'));
+        $obterHash = false;
+        while($obterHash == false){
+            sleep(1);
+            $json = $this->GET([
+                'url' => 'https://t1.youtube6download.top/check.php?callback=jQuery&v=' . $id_youtube . '&f=mp3',
+            ]);
         
-        preg_match_all("#\"(.*?)\"#",$json,$json);
+            preg_match_all("#\"(.*?)\"#",$json,$json);
 
-
-        if($json[1][2] != 'hash'){
-            echo 'Hash não encontrado';
-            exit;
+            if($json[1][2] == 'hash'){
+                $obterHash = true;
+            }
         }
 
         $hash = $json[1][3];
 
-    
         $urlDownload   = 'https://t1.youtube6download.top/quq/' . $hash . '/' . $id_youtube;
         $downloadReady = false;
 
