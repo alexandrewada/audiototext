@@ -48,7 +48,7 @@ class Bootstrap
         $t = new Translate();
 
         $t->config['encoding'] = 'FLAC';
-        $t->config['sampleRateHertz'] = 48000;
+        $t->config['sampleRateHertz'] = 44100;
 
         $patchMp3 = 'storage/mp3_audios/' . $this->id_youtube . '.mp3';
         $patchFlac = 'storage/flac_audios/' . $this->id_youtube . '.flac';
@@ -73,6 +73,8 @@ class Bootstrap
             $tempoAudio = $m->getDurationAudio($patchMp3);
             $tempoPorAudio = 60;
 
+       
+
             if ($tempoAudio >= $tempoPorAudio) {
                 $parts = ceil($tempoAudio / $tempoPorAudio);
              
@@ -87,16 +89,17 @@ class Bootstrap
 
                     $convert = $m->mp3toFlac($patchMp3, $patchFlac, $inicio, $tempoPorAudio);
 
-                    $texto[] = $t->TranslatorArchive($patchFlac);
+                    $texto[] = $t->TranslatorArchiveLine($patchFlac);
 
 
                 }
 
-                print_r($texto);
+        
             } else {
                 $patchFlac = 'storage/flac_audios/'.$this->id_youtube.'.flac';
-                $m->mp3toFlac($patchMp3, $patchFlac);
-                $texto[] = $t->TranslatorArchive($patchFlac);
+                $m->mp3toFlac($patchMp3, $patchFlac,0,1,60);
+                $texto[] = $t->TranslatorArchiveLine($patchFlac);
+        
             }
 
 
@@ -108,6 +111,8 @@ class Bootstrap
             //     file_put_contents($patchText, $texto);
             //     echo $texto;
             // }
+
+            print_r($texto);
 
         }
 

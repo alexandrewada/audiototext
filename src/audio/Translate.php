@@ -24,6 +24,17 @@ class Translate
         ]);
     }
     
+    public function TranslatorArchiveLine($dir)
+    {
+         $results = $this->sp->recognize(
+            fopen($dir, 'r'), [
+                'encoding' => $this->config['encoding'],
+                'sampleRateHertz' => $this->config['sampleRateHertz'],
+            ]);
+     
+        return $results;
+    }
+
 
     public function TranslatorArchive($dir)
     {
