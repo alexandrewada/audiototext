@@ -74,15 +74,15 @@ class Bootstrap
             $tempoPorAudio = 60;
 
             if ($tempoAudio >= $tempoPorAudio) {
-                $parts = ($tempoAudio / $tempoPorAudio);
+                $parts = ceil($tempoAudio / $tempoPorAudio);
              
         
-                for ($i = 1; $i <= $parts; $i++) {
+                for ($i = 0; $i < $parts; $i++) {
                     // $init      = ($tempoPorAudio*$i);
                     // $fim       = ($i == $parts-1 && $sobra != 0) ? ($init + $sobra) :  ($tempoPorAudio*($i+1));
                     $patchFlac = 'storage/flac_audios/' . $i . '.flac';
 
-                    $inicio = ($i == 1) ? 0.1 : $tempoPorAudio * $i;
+                    $inicio =  ($i == 0) ? 0.1 : $tempoPorAudio * $i;
 
                     $convert = $m->mp3toFlac($patchMp3, $patchFlac, $inicio, $tempoPorAudio);
 
